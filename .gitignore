@@ -1,0 +1,4 @@
+\* No binary files or object files need to be in repository.*\
+
+bin/**
+obj/**

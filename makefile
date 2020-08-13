@@ -1,16 +1,27 @@
-all:bin/todoer
+CC := gcc
+FLAGS := -Wall -pedantic -pedantic-errors -Wextra 
 
-bin/todoer: obj/todoer.o obj/main.o
-	gcc -o bin/todoer obj/main.o obj/todoer.o
+PROJDIR := $(realpath .)
+SRCDIR := $(PROJDIR)/src
+OBJDIR := $(PROJDIR)/obj
+BINDIR := $(PROJDIR)/bin
 
-obj/todoer.o: src/todoer.c
-	gcc -Wall -c -o obj/todoer.o src/todoer.c
+TARGET := todoer
 
-obj/main.o: src/main.c
-	gcc -Wall -c -o obj/main.o src/main.c
 
-go: bin/todoer.exe
-	bin/todoer.exe
+all: $(BINDIR)/$(TARGET)
+
+$(BINDIR)/todoer: $(OBJDIR)/todoer.o $(OBJDIR)/main.o
+	gcc -o $(BINDIR)/todoer $(OBJDIR)/main.o $(OBJDIR)/todoer.o
+
+$(OBJDIR)/todoer.o: $(SRCDIR)/todoer.c
+	gcc -Wall -c -o $(OBJDIR)/todoer.o $(SRCDIR)/todoer.c
+
+$(OBJDIR)/main.o: $(SRCDIR)/main.c
+	gcc -Wall -c -o $(OBJDIR)/main.o $(SRCDIR)/main.c
+
+go: $(BINDIR)/todoer.exe
+	$(BINDIR)/todoer.exe
 
 clean: 
-	rm obj/*.o bin/todoer.exe
+	rm -f $(OBJDIR)/*.o $(BINDIR)/$(TARGET)

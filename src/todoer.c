@@ -31,11 +31,8 @@ void getInput(char * str){
         str[i] = ch;
         i++;
     }
-    
-
     str[i] = '\0';
 }
-
 
 // main program loop
 int todoerLoop(void){
@@ -47,6 +44,7 @@ int todoerLoop(void){
         printf("%s", prompt);
         getInput(linebuff);
         
+        // parse linebuff to get command and args
         for (int i = 0; i < LINE_MAX; i++){
            if (linebuff[i] == ' '){
                linebuff[i] = '\0';
@@ -59,7 +57,7 @@ int todoerLoop(void){
                break;
            }
         }
-
+        // lookup for commands
         if (strcmp(cmd, "quit") == 0){
             printf("Good Bye!\n");
             return 0;
@@ -67,11 +65,8 @@ int todoerLoop(void){
         else if (strcmp(cmd, "help") == 0){
             helpMsg();
         }
-        
-        
         cmd = arg = NULL;
-        //printf("\nCMD=%s", cmd);
-        //printf(" ARG=%s\n", arg);
     }
+    // clean up
     free(linebuff);
 }

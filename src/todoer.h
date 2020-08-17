@@ -10,9 +10,10 @@ typedef struct Todo {
     char *  name;
     char *  note;
     grp     group;
-    time_t  tstamp;
-    time_t  cstamp;
-
+    time_t  addtime;
+    time_t  completetime;
+    struct Todo *next;
+    
 }Todo;
 
 // trivial welcome message

@@ -15,7 +15,21 @@ void welcomeMsg(void){
 
 void helpMsg(void){
     printf("\nToDoer is a checklist program to help prioritize the day.\n\n"); 
-    printf("Available commands:\n\nadd <Todo Name>\nshow\nquit\n\n"); 
+    printf("Available commands:\n\nadd <Todo Name>\ndel <todo Num> (Use show cmd)\nshow\nquit\n\n"); 
+}
+
+bool isNum(char *str){
+    if (!str){
+        return false;
+    }
+
+    while (*str != '\0'){
+        if(*str < '0' || *str > '9')
+            return false;
+        str++;
+    }
+
+    return true;
 }
 
 void getInput(char * str){
@@ -34,14 +48,6 @@ void getInput(char * str){
     str[i] = '\0';
 }
 
-Todo * createTodo(void){
-    
-    Todo *node = (Todo *) malloc(sizeof(Todo));
-    node -> next = NULL;
-    
-    return node;
-}
-
 int todoCount(Todo * head){
     int cnt = 0;
 
@@ -50,9 +56,54 @@ int todoCount(Todo * head){
      
     while (head != NULL){
         cnt++;
-        head = head -> next;
+        head = head->next;
     }
+
     return cnt;
+}
+
+Todo * createTodo(void){
+    Todo *node = (Todo *) malloc(sizeof(Todo));
+    node->next = NULL;
+    node->completed = false;
+
+    return node;
+}
+
+void delTodo(Todo **headptr, int todoLen, int delNum){
+    //temp is used for holding the delete bound address
+    //and will be free at the end if used
+    Todo *trav, *prev, *temp = NULL;
+    trav = *headptr;
+    
+    if (todoLen < delNum || !delNum){
+        printf("-del error: number out of scope.\n");
+    }
+    else if (*headptr){
+        if (delNum == 1){
+            if (todoLen > 1){
+                temp = *headptr;
+                *headptr = (*headptr)->next;
+            }
+            else
+                *headptr = NULL;
+            }
+        else {
+            prev = *headptr;
+            trav = prev->next;
+
+            for(int i = 1; i < delNum - 1; i++){
+                prev = trav;
+                trav = prev->next;
+            }
+            temp = trav;
+            prev->next = trav->next;
+            trav = trav->next;
+        }
+    }
+    if (temp){
+        free(temp);
+    }
 }
 
 // main program loop
@@ -60,11 +111,14 @@ int todoerLoop(void){
     char *prompt = "TODO>"; //Universal prompt prefix
     char *linebuff = (char *)malloc(sizeof(char) * LINE_MAX);
     char *cmd, *arg;
-    Todo *head, *tail, *trav;
+    Todo *head, *tail, *trav, **headptr;
     head = trav = NULL;
+    headptr = &head;
 
     while(true){
+        cmd = arg = NULL;
         trav = NULL;
+
         printf("%s", prompt);
         getInput(linebuff);
         
@@ -93,14 +147,14 @@ int todoerLoop(void){
         else if (strcmp(cmd, "add") == 0){
             if (arg){
                 if (head){
-                    tail -> next = createTodo();
-                    tail = tail -> next;
+                    tail->next = createTodo();
+                    tail = tail->next;
                 }
                 else
                     head = tail = createTodo();
                 
-                tail -> name = malloc(sizeof(char) * strlen(arg + 1));
-                strcpy(tail -> name, arg);
+                tail->name = malloc(sizeof(char) * strlen(arg + 1));
+                strcpy(tail->name, arg);
                 }     
             else{
                 printf("-add error: Todo name not supplied.\n");
@@ -110,18 +164,21 @@ int todoerLoop(void){
             trav = head;
 
             for(int i = 0; i < todoCount(head); i++){
-                printf("%i\t%s\n", i + 1, trav -> name);
-                trav = trav -> next;
+                printf("%i\t%s\n", i + 1, trav->name);
+                trav = trav->next;
             }
         }
-               
+        else if (strcmp(cmd, "del") == 0){
+            if (isNum(arg)){
+                delTodo(headptr, todoCount(head), atoi(arg));
+            }
+        }
         else if (strcmp(cmd, "help") == 0){
             helpMsg();
         }
         else {
             printf("-TODO: %s: command not found\n", cmd);
         }
-        cmd = arg = NULL;
     }
     // clean up
     if (linebuff)

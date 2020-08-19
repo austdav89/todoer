@@ -1,0 +1,21 @@
+    #### Todo list for Todoer ####
+
+
+#### PROGRAM FUNCTIONALITY
+
+## Load Todoer file
+    -use -l, --load [file location]
+    -file would save all todos
+    -file location would be in home dir
+    -possibly make loaction customizable later
+
+
+
+#### CMDS NEEDING ADDED
+## load
+    -used to load saved todos
+## save
+    -used to save todos to be loaded later
+
+
+#### CMD FUNCTIONALITY

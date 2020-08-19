@@ -6,7 +6,7 @@
 typedef u_int8_t grp;
 
 typedef struct Todo {
-    bool    completed;
+    bool    done;
     char *  name;
     char *  note;
     grp     group;

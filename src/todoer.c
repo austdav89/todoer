@@ -15,7 +15,8 @@ void welcomeMsg(void){
 
 void helpMsg(void){
     printf("\nToDoer is a checklist program to help prioritize the day.\n\n"); 
-    printf("Available commands:\n\nadd <Todo Name>\ndel <todo Num> (Use show cmd)\nshow\nquit\n\n"); 
+    printf("Available commands:\n\nadd\t<Todo Name>\ndel\t<todo Num> (Use show cmd) \
+    \ndone\t<todo Num> (Use show cmd)\nshow\nquit\n\n"); 
 }
 
 bool isNum(char *str){
@@ -65,7 +66,7 @@ int todoCount(Todo * head){
 Todo * createTodo(void){
     Todo *node = (Todo *) malloc(sizeof(Todo));
     node->next = NULL;
-    node->completed = false;
+    node->done = false;
 
     return node;
 }
@@ -77,7 +78,7 @@ void delTodo(Todo **headptr, int todoLen, int delNum){
     trav = *headptr;
     
     if (todoLen < delNum || !delNum){
-        printf("-del error: number out of scope.\n");
+        printf("-del error: number out of scope\n");
     }
     else if (*headptr){
         if (delNum == 1){
@@ -157,20 +158,41 @@ int todoerLoop(void){
                 strcpy(tail->name, arg);
                 }     
             else{
-                printf("-add error: Todo name not supplied.\n");
+                printf("-add error: Todo name not supplied\n");
             }
         }        
         else if (strcmp(cmd, "show") == 0){
             trav = head;
+            
+            if (head){
+                printf("\tTodo#\tDone\tName\n");
+                printf("\t--------------------------------\n");
+                for(int i = 0; i < todoCount(head); i++){
+                    if(trav->done == false)
+                        printf("\t%i\t%s\t%s\n", i + 1,trav->done?"Yes":"No", trav->name);
+                    trav = trav->next;
+                }
+                trav = head;
+                for(int i = 0; i < todoCount(head); i++){
+                    if(trav->done == true)
+                        printf("\t%i\t%s\t%s\n", i + 1,trav->done?"Yes":"No", trav->name);
+                    trav = trav->next;
+                }
 
-            for(int i = 0; i < todoCount(head); i++){
-                printf("%i\t%s\n", i + 1, trav->name);
-                trav = trav->next;
             }
         }
         else if (strcmp(cmd, "del") == 0){
             if (isNum(arg)){
                 delTodo(headptr, todoCount(head), atoi(arg));
+            }
+        }
+        else if (strcmp(cmd, "done") == 0){
+            trav = head;
+            if (isNum(arg)){
+                for(int i = 1; i < atoi(arg); i++){
+                    trav = trav->next;
+                }
+                trav->done = true;
             }
         }
         else if (strcmp(cmd, "help") == 0){

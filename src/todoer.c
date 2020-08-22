@@ -1,24 +1,25 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
 #include <string.h>
 #include "todoer.h"
 
-
-// Welcome message
+/* The welcome message will be shown on the start up of the program */
 void welcomeMsg(void){
     printf("\nWelcome to ToDoer v%g!\n", VERSION);
     printf("Created by: Austin Davis\n");
     printf("Type \"help\" for a list of commands.\n\n");
 }
 
+/* This function is summoned by using the help command.The bulk of the instructions and tutorials should go here. */
 void helpMsg(void){
     printf("\nToDoer is a checklist program to help prioritize the day.\n\n"); 
     printf("Available commands:\n\nadd\t<Todo Name>\ndel\t<todo Num> (Use show cmd) \
     \ndone\t<todo Num> (Use show cmd)\nshow\nquit\n\n"); 
 }
 
+/* A simple check to see if a string contains all numeric characters. */
 bool isNum(char *str){
     if (!str){
         return false;
@@ -33,6 +34,7 @@ bool isNum(char *str){
     return true;
 }
 
+/* Function for getting user input. Everything up to the return key is captured. */
 void getInput(char * str){
     char ch;
     int i = 0;
@@ -49,6 +51,7 @@ void getInput(char * str){
     str[i] = '\0';
 }
 
+/* Count the number of todos in linked list by traversing through it. */
 int todoCount(Todo * head){
     int cnt = 0;
 
@@ -63,6 +66,7 @@ int todoCount(Todo * head){
     return cnt;
 }
 
+/* Allocates space for a new todo. Also sets possible checked struct data */
 Todo * createTodo(void){
     Todo *node = (Todo *) malloc(sizeof(Todo));
     node->next = NULL;
@@ -71,6 +75,7 @@ Todo * createTodo(void){
     return node;
 }
 
+/* Deletes selected todo in list and reconnects linked list if needed. */
 void delTodo(Todo **headptr, int todoLen, int delNum){
     //temp is used for holding the delete bound address
     //and will be free at the end if used

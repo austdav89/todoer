@@ -8,7 +8,10 @@
     -file would save all todos
     -file location would be in home dir
     -possibly make loaction customizable later
-
+## Autosave on exit
+    -create a file in HOME dir that will house data
+    -look for file on program startup and load
+    -set bool flag on add or del and write on exit
 
 
 #### CMDS NEEDING ADDED

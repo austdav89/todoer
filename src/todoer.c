@@ -3,7 +3,9 @@
 #include <stdbool.h>
 #include <time.h>
 #include <string.h>
+
 #include "todoer.h"
+#include "data.h"
 
 /* The welcome message will be shown on the start up of the program */
 void welcomeMsg(void){
@@ -52,7 +54,7 @@ void getInput(char * str){
 }
 
 /* Count the number of todos in linked list by traversing through it. */
-int todoCount(Todo * head){
+int todoCount(Todo *head){
     int cnt = 0;
 
     if (!head)
@@ -67,7 +69,7 @@ int todoCount(Todo * head){
 }
 
 /* Allocates space for a new todo. Also sets possible checked struct data */
-Todo * createTodo(void){
+Todo *createTodo(void){
     Todo *node = (Todo *) malloc(sizeof(Todo));
     node->next = NULL;
     node->done = false;
@@ -147,6 +149,7 @@ int todoerLoop(void){
         }
         // lookup for commands
         if (strcmp(cmd, "quit") == 0){
+            saveData(head,todoCount(head));
             printf("Good Bye!\n");
             return 0;
         }

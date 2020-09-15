@@ -74,6 +74,8 @@ int saveData(Todo *data, int num){
             }
             fclose(fptr);
         }
+    }else {
+        remove("./.todoer");
     }
     return true;
 }

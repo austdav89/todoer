@@ -1,4 +1,4 @@
-#define VERSION 0.1f
+#define VERSION 0.5f
 
 #define LINE_MAX 256
 #define GROUP_MAX 64

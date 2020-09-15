@@ -46,7 +46,7 @@ int saveData(Todo *data, int num){
         fptr = fopen("./.todoer", "w"); 
         if (fptr != NULL){
             for (int i = 0; i < num; i++){
-                fwrite(data->name, sizeof(data->name), 1, fptr);
+                fwrite(data->name, strlen(data->name), 1, fptr);
                 fwrite("\n", 1, 1, fptr);
                 fwrite(data->done ? "1":"0", 1, 1, fptr);
                 fwrite("\n\n", 2, 1, fptr);

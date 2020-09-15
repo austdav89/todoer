@@ -11,13 +11,17 @@ TARGET := todoer
 
 all: $(BINDIR)/$(TARGET)
 
-$(BINDIR)/todoer: $(OBJDIR)/todoer.o $(OBJDIR)/main.o
+$(BINDIR)/todoer: $(OBJDIR)/todoer.o $(OBJDIR)/data.o $(OBJDIR)/main.o 
 	mkdir -p $(BINDIR)
-	$(CC) $(FLAGS) -o $(BINDIR)/todoer $(OBJDIR)/main.o $(OBJDIR)/todoer.o
+	$(CC) $(FLAGS) -o $(BINDIR)/todoer $(OBJDIR)/main.o $(OBJDIR)/todoer.o $(OBJDIR)/data.o
 
 $(OBJDIR)/todoer.o: $(SRCDIR)/todoer.c
 	mkdir -p $(OBJDIR)
 	$(CC) $(FLAGS) -c -o $(OBJDIR)/todoer.o $(SRCDIR)/todoer.c
+
+$(OBJDIR)/data.o: $(SRCDIR)/data.c
+	mkdir -p $(OBJDIR)
+	$(CC) $(FLAGS) -c -o $(OBJDIR)/data.o $(SRCDIR)/data.c
 
 $(OBJDIR)/main.o: $(SRCDIR)/main.c
 	mkdir -p $(OBJDIR)

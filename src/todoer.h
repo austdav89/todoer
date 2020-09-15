@@ -21,3 +21,5 @@ void welcomeMsg(void);
 
 // main program loop
 int todoerLoop(void);
+
+Todo *createTodo(void);

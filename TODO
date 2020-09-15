@@ -1,6 +1,5 @@
     #### Todo list for Todoer ####
 
-
 #### PROGRAM FUNCTIONALITY
 
 ## Load Todoer file
@@ -13,12 +12,11 @@
     -look for file on program startup and load
     -set bool flag on add or del and write on exit
 
-
 #### CMDS NEEDING ADDED
 ## load
     -used to load saved todos
 ## save
     -used to save todos to be loaded later
 
-
 #### CMD FUNCTIONALITY
+    -getInput should also have max input num parameter

@@ -3,12 +3,15 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
 
 #include "todoer.h"
 #include "data.h"
 
-char filePath[] = "~/";
-char fileName[] = ".todoer";
+const char *homeDir;
+char *fileName = "/.todoer";
 
 int loadData(Todo **headptr, Todo **tailptr){
     FILE *fptr;
@@ -19,11 +22,15 @@ int loadData(Todo **headptr, Todo **tailptr){
     Todo *head = *headptr;
     Todo *tail = *tailptr;
     Todo *trav = head = NULL;
-    
-    strcpy(fullPath, filePath);
+
+    if ((homeDir = getenv("HOME")) == NULL) {
+        homeDir = getpwuid(getuid())->pw_dir;
+    }
+
+    strcpy(fullPath, homeDir);
     strcat(fullPath, fileName);
     
-    if ((fptr = fopen("./.todoer", "r"))){
+    if ((fptr = fopen(fullPath, "r"))){
         head = trav = tail = createTodo();
         while ((lineSize = getline(&buff, &lineMax, fptr)) >= 0){
             if (trav == NULL){
@@ -58,12 +65,15 @@ int saveData(Todo *data, int num){
     FILE *fptr;
     char fullPath[MAX_PATH_SIZE];
 
-    strcpy(fullPath, filePath);
+    if ((homeDir = getenv("HOME")) == NULL) {
+        homeDir = getpwuid(getuid())->pw_dir;
+    }
+    strcpy(fullPath, homeDir);
     strcat(fullPath, fileName);
     //printf("Saving Data to %s...\n", fullPath);
     
     if (num){
-        fptr = fopen("./.todoer", "w"); 
+        fptr = fopen(fullPath, "w"); 
         if (fptr != NULL){
             for (int i = 0; i < num; i++){
                 fwrite(data->name, strlen(data->name), 1, fptr);

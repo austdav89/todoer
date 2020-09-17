@@ -1,5 +1,5 @@
 
-#define MAX_PATH_SIZE 32
+#define MAX_PATH_SIZE 256
 
 int saveData(Todo *data, int num);
 
